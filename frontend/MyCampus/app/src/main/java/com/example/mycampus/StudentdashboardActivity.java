@@ -190,7 +190,6 @@ public class StudentdashboardActivity extends AppCompatActivity {
         // 5. Fetch Resources Counts
         totalNotesCount = 0;
         totalPyqCount = 0;
-        totalVideoCount = 0;
 
         RetrofitClient.getApiService().getNotes(token).enqueue(new Callback<List<Note>>() {
             @Override
