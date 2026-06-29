@@ -47,6 +47,14 @@
     <string name="registered_users_db">Registered Users Database</string>
     <string name="btn_logout">Logout</string>
 
+    <string name="complaints">Complaints</string>
+    <string name="complaints_registry">Complaints Registry</string>
+    <string name="title_complaints_registry">Complaints Registry</string>
+    <string name="label_complaint_title">Complaint Title</string>
+    <string name="label_status">Status</string>
+    <string name="btn_resolve">Resolve</string>
+    <string name="btn_resolved">Resolved</string>
+
     <string name="title_faculty_dashboard">Faculty Dashboard</string>
     <string name="hero_title_faculty">Academic Control Center</string>
     <string name="hero_subtitle_faculty">Upload results, track class attendance, assign project marks, and provide resource materials.</string>

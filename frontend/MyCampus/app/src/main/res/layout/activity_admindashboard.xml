@@ -299,8 +299,8 @@
                     android:layout_margin="4dp"
                     app:cardCornerRadius="8dp">
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="12dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="👥" android:textSize="20sp" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/manage_users" android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚖️" android:textSize="20sp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/complaints" android:textStyle="bold" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -358,7 +358,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Users Database Table Card -->
+            <!-- Complaints Registry Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -376,7 +376,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        android:text="@string/registered_users_db"
+                        android:text="@string/complaints_registry"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -386,15 +386,15 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:paddingBottom="8dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Username" android:textStyle="bold" android:textSize="12sp" />
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Role" android:textStyle="bold" android:textSize="12sp" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Action" android:textStyle="bold" android:textSize="12sp" android:paddingStart="8dp" />
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Complaint" android:textStyle="bold" android:textSize="12sp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Status" android:textStyle="bold" android:textSize="12sp" android:layout_marginEnd="40dp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Action" android:textStyle="bold" android:textSize="12sp" />
                     </LinearLayout>
 
                     <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE" />
 
                     <LinearLayout
-                        android:id="@+id/llUsersTable"
+                        android:id="@+id/llComplaintsTable"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"

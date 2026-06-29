@@ -36,10 +36,11 @@ public class admindashboardActivity extends AppCompatActivity {
     private TextInputEditText etNewUsername, etNewEmail, etNewEnrollment, etNewDepartment, etNewPassword;
     private Spinner spNewUserRole;
     private TextView tvTotalStudents, tvTotalFaculty, tvTotalResources, tvTotalNotices, tvTotalCerts, tvTotalComplaints;
-    private LinearLayout llAdminNotices, llUsersTable;
+    private LinearLayout llAdminNotices, llComplaintsTable;
 
     private List<User> users = new ArrayList<>();
     private List<Notice> notices = new ArrayList<>();
+    private List<Complaint> complaints = new ArrayList<>();
     private boolean isFormVisible = false;
 
     @Override
@@ -75,7 +76,7 @@ public class admindashboardActivity extends AppCompatActivity {
         tvTotalComplaints = findViewById(R.id.tvTotalComplaints);
         
         llAdminNotices = findViewById(R.id.llAdminNotices);
-        llUsersTable = findViewById(R.id.llUsersTable);
+        llComplaintsTable = findViewById(R.id.llComplaintsTable);
 
         // Setup Role Spinner
         String[] roles = {"STUDENT", "FACULTY"};
@@ -99,11 +100,22 @@ public class admindashboardActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     users.clear();
                     users.addAll(response.body());
-                    updateUsersUI();
                     calculateTotals();
                 }
             }
             @Override public void onFailure(Call<List<User>> call, Throwable t) {}
+        });
+
+        RetrofitClient.getApiService().getComplaints(token).enqueue(new Callback<List<Complaint>>() {
+            @Override public void onResponse(Call<List<Complaint>> call, Response<List<Complaint>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    complaints.clear();
+                    complaints.addAll(response.body());
+                    updateComplaintsUI();
+                    tvTotalComplaints.setText(String.valueOf(complaints.size()));
+                }
+            }
+            @Override public void onFailure(Call<List<Complaint>> call, Throwable t) {}
         });
 
         RetrofitClient.getApiService().getNotices(token).enqueue(new Callback<List<Notice>>() {
@@ -247,29 +259,38 @@ public class admindashboardActivity extends AppCompatActivity {
         builder.show();
     }
 
-    private void updateUsersUI() {
-        llUsersTable.removeAllViews();
-        for (User u : users) {
-            View row = LayoutInflater.from(this).inflate(R.layout.row_user, llUsersTable, false);
-            TextView tvUser = row.findViewById(R.id.tvUsername);
-            TextView tvRole = row.findViewById(R.id.tvRole);
-            Button btnDelete = row.findViewById(R.id.btnDeleteUser);
-            
-            tvUser.setText(u.username);
-            tvRole.setText(u.role);
-            
-            btnDelete.setOnClickListener(v -> deleteUser(u.id));
-            
-            llUsersTable.addView(row);
-        }
-    }
-
-    private void deleteUser(int id) {
+    private void updateComplaintsUI() {
+        llComplaintsTable.removeAllViews();
         String token = getSharedPreferences("MY_CAMPUS_PREFS", MODE_PRIVATE).getString("JWT_TOKEN", "");
-        RetrofitClient.getApiService().deleteUser(token, id).enqueue(new Callback<Void>() {
-            @Override public void onResponse(Call<Void> call, Response<Void> response) { fetchData(); }
-            @Override public void onFailure(Call<Void> call, Throwable t) {}
-        });
+        
+        for (Complaint c : complaints) {
+            View row = LayoutInflater.from(this).inflate(R.layout.row_complaint, llComplaintsTable, false);
+            TextView tvTitle = row.findViewById(R.id.tvComplaintTitle);
+            TextView tvDesc = row.findViewById(R.id.tvComplaintDesc);
+            TextView tvStatus = row.findViewById(R.id.tvComplaintStatus);
+            Button btnAction = row.findViewById(R.id.btnChangeStatus);
+            
+            tvTitle.setText(c.title);
+            tvDesc.setText(c.description);
+            tvStatus.setText(c.status);
+            
+            if ("resolved".equalsIgnoreCase(c.status)) {
+                btnAction.setText("Resolved");
+                btnAction.setEnabled(false);
+            } else {
+                btnAction.setText("Resolve");
+                btnAction.setOnClickListener(v -> {
+                    java.util.Map<String, String> statusUpdate = new java.util.HashMap<>();
+                    statusUpdate.put("status", "resolved");
+                    RetrofitClient.getApiService().updateComplaintStatus(token, c.id, statusUpdate).enqueue(new Callback<Complaint>() {
+                        @Override public void onResponse(Call<Complaint> call, Response<Complaint> response) { fetchData(); }
+                        @Override public void onFailure(Call<Complaint> call, Throwable t) {}
+                    });
+                });
+            }
+            
+            llComplaintsTable.addView(row);
+        }
     }
 
     private void updateNoticesUI() {

@@ -219,7 +219,7 @@ class Command(BaseCommand):
                     user=student,
                     title=title,
                     description=f"This is a detailed description of the complaint: {title}.",
-                    status=random.choice(["PENDING", "IN_PROGRESS", "RESOLVED"]),
+                    status=random.choice(["pending", "resolved"]),
                     priority=random.choice(["LOW", "MEDIUM", "HIGH"])
                 )
                 complaints_count += 1

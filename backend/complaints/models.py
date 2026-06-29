@@ -3,9 +3,8 @@ from accounts.models import User
 
 class Complaint(models.Model):
     STATUS_CHOICES = [
-        ('PENDING', 'Pending'),
-        ('IN_PROGRESS', 'In Progress'),
-        ('RESOLVED', 'Resolved'),
+        ('pending', 'Pending'),
+        ('resolved', 'Resolved'),
     ]
     PRIORITY_CHOICES = [
         ('LOW', 'Low'),
@@ -15,7 +14,7 @@ class Complaint(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='complaints')
     title = models.CharField(max_length=200)
     description = models.TextField()
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     priority = models.CharField(max_length=20, choices=PRIORITY_CHOICES, default='MEDIUM')
     admin_reply = models.TextField(blank=True, default='')
     resolved_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, limit_choices_to={'role': User.Role.ADMIN}, related_name='resolved_complaints')

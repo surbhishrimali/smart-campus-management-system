@@ -106,4 +106,7 @@ public interface ApiService {
 
     @POST("api/complaints/")
     Call<Complaint> postComplaint(@Header("Authorization") String token, @Body Complaint complaint);
+
+    @PATCH("api/complaints/{id}/")
+    Call<Complaint> updateComplaintStatus(@Header("Authorization") String token, @Path("id") int id, @Body Map<String, String> status);
 }

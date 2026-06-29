@@ -16,7 +16,7 @@ class ComplaintViewSet(viewsets.ModelViewSet):
     ordering_fields = ['created_at', 'priority']
 
     def get_permissions(self):
-        if self.action in ['destroy']:
+        if self.action in ['update', 'partial_update', 'destroy']:
             return [permissions.IsAuthenticated(), IsAdmin()]
         return [permissions.IsAuthenticated()]
 
@@ -35,7 +35,7 @@ class ComplaintViewSet(viewsets.ModelViewSet):
         status_val = serializer.validated_data.get('status')
         resolved_at_val = None
         resolved_by_val = None
-        if status_val == 'RESOLVED':
+        if status_val == 'resolved':
             resolved_at_val = timezone.now()
             resolved_by_val = self.request.user
         serializer.save(resolved_by=resolved_by_val, resolved_at=resolved_at_val)
