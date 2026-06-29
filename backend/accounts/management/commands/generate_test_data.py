@@ -8,6 +8,9 @@ from resources.models import Resource
 from notifications.models import Notification
 from attendance.models import Attendance
 from results.models import Result
+from academics.models import Course, Subject
+from certificates.models import Certificate
+from complaints.models import Complaint
 
 class Command(BaseCommand):
     help = 'Generates sample test data for Smart Campus Management System'
@@ -21,6 +24,10 @@ class Command(BaseCommand):
         Notification.objects.all().delete()
         StudentProfile.objects.all().delete()
         FacultyProfile.objects.all().delete()
+        Certificate.objects.all().delete()
+        Complaint.objects.all().delete()
+        Subject.objects.all().delete()
+        Course.objects.all().delete()
         User.objects.exclude(is_superuser=True).delete()
 
         self.stdout.write("Generating 5 Faculty users and profiles...")
@@ -72,15 +79,42 @@ class Command(BaseCommand):
             students.append(user)
         self.stdout.write(f"Successfully generated {len(students)} student users.")
 
+        self.stdout.write("Generating academics courses and subjects...")
+        course = Course.objects.create(name="B.Tech Computer Science & Engineering", code="CSE")
+        subject_names = ["Algorithms", "Database Systems", "Machine Learning", "Operating Systems", "Computer Networks"]
+        subject_objects = []
+        for s_name in subject_names:
+            sub = Subject.objects.create(name=s_name, semester=4, course=course)
+            subject_objects.append(sub)
+        self.stdout.write("Successfully generated courses and subjects.")
+
         self.stdout.write("Generating sample resources...")
-        subjects = ["Algorithms", "Database Systems", "Machine Learning", "Operating Systems", "Computer Networks"]
-        for i, sub in enumerate(subjects):
+        for i, sub_obj in enumerate(subject_objects):
             faculty = random.choice(faculties)
+            # PDF note
             Resource.objects.create(
-                title=f"Lecture Notes on {sub}",
-                description=f"This resource contains comprehensive lecture slides and reading materials for {sub}.",
-                subject=sub,
+                title=f"Lecture Notes on {sub_obj.name}",
+                description=f"This resource contains comprehensive lecture slides and reading materials for {sub_obj.name}.",
+                subject=sub_obj,
                 resource_type="NOTE",
+                youtube_link="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                uploaded_by=faculty
+            )
+            # PYQ
+            Resource.objects.create(
+                title=f"Previous Year Question Paper - {sub_obj.name}",
+                description=f"End-semester question paper for {sub_obj.name} from 2024.",
+                subject=sub_obj,
+                resource_type="PYQ",
+                year=2024,
+                uploaded_by=faculty
+            )
+            # YouTube recommendation
+            Resource.objects.create(
+                title=f"Useful YouTube lectures for {sub_obj.name}",
+                description=f"Video playlists mapping the syllabus of {sub_obj.name}.",
+                subject=sub_obj,
+                resource_type="YOUTUBE",
                 youtube_link="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
                 uploaded_by=faculty
             )
@@ -114,17 +148,17 @@ class Command(BaseCommand):
             date = today - datetime.timedelta(days=day_offset)
             for student in students:
                 faculty = random.choice(faculties)
-                sub = random.choice(subjects)
+                sub_obj = random.choice(subject_objects)
                 status_choice = random.choices(statuses, weights=[80, 15, 5], k=1)[0]
                 
                 Attendance.objects.create(
                     student=student,
                     faculty=faculty,
-                    subject=sub,
+                    subject=sub_obj.name,
                     date=date,
                     status=status_choice,
                     is_present=(status_choice == "Present"),
-                    student_class=random.randint(101, 105)
+                    student_class=sub_obj.id  # Matches the subject id (Int) expected by Android app
                 )
                 attendance_count += 1
         self.stdout.write(f"Successfully generated {attendance_count} attendance records.")
@@ -141,24 +175,54 @@ class Command(BaseCommand):
         ]
         for student in students:
             # Generate results for 3 random subjects for each student
-            student_subs = random.sample(subjects, 3)
-            for sub in student_subs:
+            student_subs = random.sample(subject_objects, 3)
+            for sub_obj in student_subs:
                 marks = random.randint(45, 98)
                 grade = next(g for score, g in grades_map if marks >= score)
                 faculty = random.choice(faculties)
-                
-                # Fetch student profile to get correct semester
                 profile = student.student_profile
                 
                 Result.objects.create(
                     student=student,
-                    subject=sub,
+                    subject=sub_obj.name,
                     marks=marks,
                     grade=grade,
+                    gpa=round(marks / 10.0, 1),
                     remarks="Pass" if marks >= 50 else "Fail",
                     semester=profile.semester,
                     published_by=faculty
                 )
                 result_count += 1
         self.stdout.write(f"Successfully generated {result_count} result records.")
+
+        self.stdout.write("Generating sample certificates...")
+        certificates_count = 0
+        cert_titles = ["Bonafide Certificate", "Grade Card - Sem 3", "NOC for Internship"]
+        for student in students:
+            for title in cert_titles:
+                Certificate.objects.create(
+                    student=student,
+                    title=title,
+                    issued_by="Administration Office",
+                    issue_date=today - datetime.timedelta(days=random.randint(10, 50)),
+                    status="APPROVED" if random.random() > 0.3 else "PENDING"
+                )
+                certificates_count += 1
+        self.stdout.write(f"Successfully generated {certificates_count} certificate requests.")
+
+        self.stdout.write("Generating sample complaints...")
+        complaints_count = 0
+        complaint_titles = ["Wifi not working in Hostel Block A", "Library water cooler repair", "Lab computer mouse missing"]
+        for student in students[:5]:
+            for title in complaint_titles:
+                Complaint.objects.create(
+                    user=student,
+                    title=title,
+                    description=f"This is a detailed description of the complaint: {title}.",
+                    status=random.choice(["PENDING", "IN_PROGRESS", "RESOLVED"]),
+                    priority=random.choice(["LOW", "MEDIUM", "HIGH"])
+                )
+                complaints_count += 1
+        self.stdout.write(f"Successfully generated {complaints_count} complaints.")
+
         self.stdout.write(self.style.SUCCESS("All sample data seeded successfully!"))

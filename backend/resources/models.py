@@ -19,9 +19,10 @@ class Resource(models.Model):
     created_at = models.DateTimeField(auto_now_add=True) # (kept for legacy support)
     
     # New required fields
-    subject = models.CharField(max_length=150, null=True, blank=True)
+    subject = models.ForeignKey('academics.Subject', on_delete=models.SET_NULL, null=True, blank=True, related_name='resources')
     youtube_link = models.URLField(null=True, blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    year = models.IntegerField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if self.youtube_link and not self.youtube_url:

@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from resources.models import Resource
 from resources.api.serializers import ResourceSerializer
+from resources.api.serializers_compat import NoteSerializer, PyqSerializer, YoutubeRecommendationSerializer
 from accounts.permissions import IsAdmin, IsFaculty
 from config.viewsets import WrappedModelViewSet
 
@@ -33,3 +34,27 @@ class ResourceViewSet(WrappedModelViewSet):
             "message": "Resource uploaded successfully",
             "data": serializer.data
         }, status=status.HTTP_201_CREATED)
+
+class NoteViewSet(WrappedModelViewSet):
+    queryset = Resource.objects.filter(resource_type='NOTE').select_related('uploaded_by').order_by('id')
+    serializer_class = NoteSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(uploaded_by=self.request.user, resource_type='NOTE')
+
+class PyqViewSet(WrappedModelViewSet):
+    queryset = Resource.objects.filter(resource_type='PYQ').select_related('uploaded_by').order_by('id')
+    serializer_class = PyqSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(uploaded_by=self.request.user, resource_type='PYQ')
+
+class YoutubeRecommendationViewSet(WrappedModelViewSet):
+    queryset = Resource.objects.filter(resource_type='YOUTUBE').select_related('uploaded_by').order_by('id')
+    serializer_class = YoutubeRecommendationSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(uploaded_by=self.request.user, resource_type='YOUTUBE')

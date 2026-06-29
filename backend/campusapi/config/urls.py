@@ -21,8 +21,16 @@ from rest_framework.routers import DefaultRouter
 
 from accounts.api.views import UserViewSet
 
+from rest_framework.routers import DefaultRouter
+from resources.api.views import NoteViewSet, PyqViewSet, YoutubeRecommendationViewSet
+
 user_router = DefaultRouter()
 user_router.register('', UserViewSet, basename='user')
+
+router_compat = DefaultRouter()
+router_compat.register('notes', NoteViewSet, basename='compat-note')
+router_compat.register('pyqs', PyqViewSet, basename='compat-pyq')
+router_compat.register('youtube-recommendations', YoutubeRecommendationViewSet, basename='compat-youtube')
 
 urlpatterns = [
     path('', lambda request: None),
@@ -49,6 +57,8 @@ urlpatterns = [
     path('api/complaints/', include('complaints.api.urls')),
     path('api/timetable/', include('timetable.api.urls')),
     path('api/examination/', include('examination.api.urls')),
+    path('api/', include('academics.api.urls')),
+    path('api/', include(router_compat.urls)),
 ]
 
 from django.conf import settings

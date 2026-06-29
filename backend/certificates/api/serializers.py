@@ -9,7 +9,16 @@ class CertificateSerializer(serializers.ModelSerializer):
         queryset=User.objects.filter(role=User.Role.STUDENT),
         required=False
     )
+    certificate_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Certificate
-        fields = ['id', 'student', 'student_email', 'student_name', 'title', 'issued_by', 'issue_date', 'certificate_file', 'status']
+        fields = ['id', 'student', 'student_email', 'student_name', 'title', 'issued_by', 'issue_date', 'certificate_file', 'certificate_url', 'status']
+
+    def get_certificate_url(self, obj):
+        if obj.certificate_file:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.certificate_file.url)
+            return obj.certificate_file.url
+        return None

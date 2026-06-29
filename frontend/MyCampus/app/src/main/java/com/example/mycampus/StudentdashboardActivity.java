@@ -34,7 +34,7 @@ public class StudentdashboardActivity extends AppCompatActivity {
     private ProgressBar pbAttendance;
     private TextView tvOverallGpa;
     private LinearLayout llGpaChart;
-    private LinearLayout llNotices;
+    private LinearLayout llComplaints;
     private LinearLayout llResults;
     private LinearLayout llProjects;
     private LinearLayout llCertificates;
@@ -42,7 +42,7 @@ public class StudentdashboardActivity extends AppCompatActivity {
     private List<Result> results = new ArrayList<>();
     private List<Project> projects = new ArrayList<>();
     private List<Certificate> certificates = new ArrayList<>();
-    private List<Notice> notices = new ArrayList<>();
+    private List<Complaint> complaints = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,7 @@ public class StudentdashboardActivity extends AppCompatActivity {
         pbAttendance = findViewById(R.id.pbAttendance);
         tvOverallGpa = findViewById(R.id.tvOverallGpa);
         llGpaChart = findViewById(R.id.llGpaChart);
-        llNotices = findViewById(R.id.llNotices);
+        llComplaints = findViewById(R.id.llComplaints);
         llResults = findViewById(R.id.llResults);
         llProjects = findViewById(R.id.llProjects);
         llCertificates = findViewById(R.id.llCertificates);
@@ -80,6 +80,8 @@ public class StudentdashboardActivity extends AppCompatActivity {
         findViewById(R.id.btnViewResults).setOnClickListener(v -> {
             startActivity(new Intent(this, StudentResultsActivity.class));
         });
+
+        findViewById(R.id.btnNewComplaint).setOnClickListener(v -> showFileComplaintDialog());
 
         findViewById(R.id.btnTranscript).setOnClickListener(v -> requestTranscript());
         findViewById(R.id.btnLeave).setOnClickListener(v -> applyForLeave());
@@ -129,16 +131,16 @@ public class StudentdashboardActivity extends AppCompatActivity {
             @Override public void onFailure(Call<List<Result>> call, Throwable t) {}
         });
 
-        RetrofitClient.getApiService().getNotices(token).enqueue(new Callback<List<Notice>>() {
+        RetrofitClient.getApiService().getComplaints(token).enqueue(new Callback<List<Complaint>>() {
             @Override
-            public void onResponse(Call<List<Notice>> call, Response<List<Notice>> response) {
+            public void onResponse(Call<List<Complaint>> call, Response<List<Complaint>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    notices.clear();
-                    notices.addAll(response.body());
-                    updateNoticesUI();
+                    complaints.clear();
+                    complaints.addAll(response.body());
+                    updateComplaintsUI();
                 }
             }
-            @Override public void onFailure(Call<List<Notice>> call, Throwable t) {}
+            @Override public void onFailure(Call<List<Complaint>> call, Throwable t) {}
         });
 
         RetrofitClient.getApiService().getProjects(token).enqueue(new Callback<List<Project>>() {
@@ -217,19 +219,93 @@ public class StudentdashboardActivity extends AppCompatActivity {
         }
     }
 
-    private void updateNoticesUI() {
-        llNotices.removeAllViews();
+    private void updateComplaintsUI() {
+        llComplaints.removeAllViews();
         int count = 0;
-        for (Notice n : notices) {
-            if (count >= 3) break; // Only show 3 alerts on dashboard
-            View itemView = LayoutInflater.from(this).inflate(android.R.layout.simple_list_item_2, llNotices, false);
+        for (Complaint c : complaints) {
+            if (count >= 5) break; // Only show 5 complaints on dashboard
+            View itemView = LayoutInflater.from(this).inflate(android.R.layout.simple_list_item_2, llComplaints, false);
             TextView t1 = itemView.findViewById(android.R.id.text1);
             TextView t2 = itemView.findViewById(android.R.id.text2);
-            t1.setText(n.title);
-            t2.setText(n.content);
-            llNotices.addView(itemView);
+            t1.setText(c.title + " (" + c.status + ")");
+            t2.setText(c.description);
+            llComplaints.addView(itemView);
             count++;
         }
+    }
+
+    private void showFileComplaintDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("File New Complaint");
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(40, 20, 40, 20);
+
+        final android.widget.EditText etTitleInput = new android.widget.EditText(this);
+        etTitleInput.setHint("Complaint Title");
+        layout.addView(etTitleInput);
+
+        final android.widget.EditText etDescInput = new android.widget.EditText(this);
+        etDescInput.setHint("Description");
+        etDescInput.setMinLines(3);
+        layout.addView(etDescInput);
+
+        final android.widget.Spinner spPriority = new android.widget.Spinner(this);
+        String[] priorities = {"LOW", "MEDIUM", "HIGH"};
+        android.widget.ArrayAdapter<String> spinnerAdapter = new android.widget.ArrayAdapter<>(this, android.R.layout.simple_spinner_item, priorities);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spPriority.setAdapter(spinnerAdapter);
+        spPriority.setSelection(1); // MEDIUM default
+        layout.addView(spPriority);
+
+        builder.setView(layout);
+
+        builder.setPositiveButton("Submit", (dialog, which) -> {
+            String title = etTitleInput.getText().toString().trim();
+            String desc = etDescInput.getText().toString().trim();
+            String priority = spPriority.getSelectedItem().toString();
+
+            if (title.isEmpty() || desc.isEmpty()) {
+                Toast.makeText(this, "Title and description cannot be empty", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            submitComplaint(title, desc, priority);
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.show();
+    }
+
+    private void submitComplaint(String title, String description, String priority) {
+        SharedPreferences prefs = getSharedPreferences("MY_CAMPUS_PREFS", MODE_PRIVATE);
+        String token = prefs.getString("JWT_TOKEN", "");
+        int userId = prefs.getInt("USER_ID", -1);
+        if (token.isEmpty() || userId == -1) return;
+
+        Complaint complaint = new Complaint();
+        complaint.student = userId;
+        complaint.title = title;
+        complaint.description = description;
+        complaint.status = "PENDING";
+
+        RetrofitClient.getApiService().postComplaint(token, complaint).enqueue(new Callback<Complaint>() {
+            @Override
+            public void onResponse(Call<Complaint> call, Response<Complaint> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(StudentdashboardActivity.this, "Complaint filed successfully!", Toast.LENGTH_SHORT).show();
+                    fetchData(); // Reload data
+                } else {
+                    Toast.makeText(StudentdashboardActivity.this, "Failed to file complaint", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Complaint> call, Throwable t) {
+                Toast.makeText(StudentdashboardActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void updateGpaTrendUI() {

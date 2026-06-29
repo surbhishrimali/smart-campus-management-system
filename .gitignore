@@ -1,11 +1,9 @@
 # Python virtual environments and caches
-backend/campusapi/venv/
 **/__pycache__/
 **/*.py[cod]
 **/*$py.class
 
 # Databases
-backend/campusapi/db.sqlite3
 
 # OS files and IDEs
 .idea/
