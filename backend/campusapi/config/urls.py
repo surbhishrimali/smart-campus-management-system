@@ -21,8 +21,7 @@ from rest_framework.routers import DefaultRouter
 
 from accounts.api.views import UserViewSet
 
-from rest_framework.routers import DefaultRouter
-from resources.api.views import NoteViewSet, PyqViewSet, YoutubeRecommendationViewSet
+from resources.api.views import NoteViewSet, PyqViewSet
 
 user_router = DefaultRouter()
 user_router.register('', UserViewSet, basename='user')
@@ -30,7 +29,6 @@ user_router.register('', UserViewSet, basename='user')
 router_compat = DefaultRouter()
 router_compat.register('notes', NoteViewSet, basename='compat-note')
 router_compat.register('pyqs', PyqViewSet, basename='compat-pyq')
-router_compat.register('youtube-recommendations', YoutubeRecommendationViewSet, basename='compat-youtube')
 
 urlpatterns = [
     path('', lambda request: None),

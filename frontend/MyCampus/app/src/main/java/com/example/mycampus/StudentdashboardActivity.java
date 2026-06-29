@@ -33,7 +33,6 @@ public class StudentdashboardActivity extends AppCompatActivity {
     private List<Result> results = new ArrayList<>();
     private int totalNotesCount = 0;
     private int totalPyqCount = 0;
-    private int totalVideoCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,21 +213,10 @@ public class StudentdashboardActivity extends AppCompatActivity {
             }
             @Override public void onFailure(Call<List<Pyq>> call, Throwable t) {}
         });
-
-        RetrofitClient.getApiService().getYoutubeRecommendations(token).enqueue(new Callback<List<YoutubeRecommendation>>() {
-            @Override
-            public void onResponse(Call<List<YoutubeRecommendation>> call, Response<List<YoutubeRecommendation>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    totalVideoCount = response.body().size();
-                    updateResourcesTotal();
-                }
-            }
-            @Override public void onFailure(Call<List<YoutubeRecommendation>> call, Throwable t) {}
-        });
     }
 
     private void updateResourcesTotal() {
-        int sum = totalNotesCount + totalPyqCount + totalVideoCount;
+        int sum = totalNotesCount + totalPyqCount;
         tvTotalResources.setText(String.valueOf(sum));
     }
 

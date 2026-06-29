@@ -7,8 +7,8 @@ class ResourceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Resource
         fields = [
-            'id', 'title', 'description', 'resource_type', 'pdf_file', 'youtube_url', 
+            'id', 'title', 'description', 'resource_type', 'pdf_file', 
             'uploaded_by', 'uploader_name', 'department', 'created_at',
-            'subject', 'youtube_link', 'uploaded_at'
+            'subject', 'uploaded_at'
         ]
         read_only_fields = ['uploaded_by']

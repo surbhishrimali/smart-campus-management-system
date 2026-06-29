@@ -42,15 +42,3 @@ class PyqSerializer(serializers.ModelSerializer):
                 return request.build_absolute_uri(obj.pdf_file.url)
             return obj.pdf_file.url
         return None
-
-class YoutubeRecommendationSerializer(serializers.ModelSerializer):
-    video_url = serializers.SerializerMethodField()
-    subject = serializers.PrimaryKeyRelatedField(queryset=Subject.objects.all(), required=False, allow_null=True)
-
-    class Meta:
-        model = Resource
-        fields = ['id', 'subject', 'title', 'video_url']
-        read_only_fields = ['id', 'video_url']
-
-    def get_video_url(self, obj):
-        return obj.youtube_url or obj.youtube_link or ''

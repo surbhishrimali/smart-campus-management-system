@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from resources.models import Resource
 from resources.api.serializers import ResourceSerializer
-from resources.api.serializers_compat import NoteSerializer, PyqSerializer, YoutubeRecommendationSerializer
+from resources.api.serializers_compat import NoteSerializer, PyqSerializer
 from accounts.permissions import IsAdmin, IsFaculty
 from config.viewsets import WrappedModelViewSet
 
@@ -50,11 +50,3 @@ class PyqViewSet(WrappedModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(uploaded_by=self.request.user, resource_type='PYQ')
-
-class YoutubeRecommendationViewSet(WrappedModelViewSet):
-    queryset = Resource.objects.filter(resource_type='YOUTUBE').select_related('uploaded_by').order_by('id')
-    serializer_class = YoutubeRecommendationSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def perform_create(self, serializer):
-        serializer.save(uploaded_by=self.request.user, resource_type='YOUTUBE')

@@ -102,17 +102,6 @@ public class ResourcesActivity extends AppCompatActivity {
             }
             @Override public void onFailure(Call<List<Note>> call, Throwable t) { updateUI(); }
         });
-
-        RetrofitClient.getApiService().getYoutubeRecommendations(token).enqueue(new Callback<List<YoutubeRecommendation>>() {
-            @Override public void onResponse(Call<List<YoutubeRecommendation>> call, Response<List<YoutubeRecommendation>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    for (YoutubeRecommendation y : response.body()) 
-                        displayList.add(new ResourceItem(y.id, y.title, "YouTube", y.videoUrl, "Faculty"));
-                    updateUI();
-                }
-            }
-            @Override public void onFailure(Call<List<YoutubeRecommendation>> call, Throwable t) { updateUI(); }
-        });
     }
 
     private void updateUI() {
@@ -135,13 +124,8 @@ public class ResourcesActivity extends AppCompatActivity {
             TextView icon = v.findViewById(R.id.tvResourceIcon);
             TextView btnOpen = v.findViewById(R.id.btnOpen);
 
-            if ("YouTube".equals(item.type)) {
-                icon.setText("▶️");
-                btnOpen.setText("Watch on YouTube");
-            } else {
-                icon.setText("📄");
-                btnOpen.setText("View / Download PDF");
-            }
+            icon.setText("📄");
+            btnOpen.setText("View / Download PDF");
 
             btnOpen.setOnClickListener(view -> {
                 if (item.url != null && !item.url.isEmpty()) {

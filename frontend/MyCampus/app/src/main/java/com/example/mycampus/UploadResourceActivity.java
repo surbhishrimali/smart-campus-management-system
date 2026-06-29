@@ -41,10 +41,8 @@ import retrofit2.Response;
 
 public class UploadResourceActivity extends AppCompatActivity {
 
-    private TextInputEditText etTitle, etDescription, etYoutubeUrl;
-    private TextInputLayout tilYoutubeUrl;
+    private TextInputEditText etTitle, etDescription;
     private Spinner spSubject;
-    private RadioGroup rgResourceType;
     private View llPdfPicker;
     private TextView tvSelectedFileName;
     private ProgressBar progressBar;
@@ -63,23 +61,10 @@ public class UploadResourceActivity extends AppCompatActivity {
 
         etTitle = findViewById(R.id.etResourceTitle);
         etDescription = findViewById(R.id.etResourceDescription);
-        etYoutubeUrl = findViewById(R.id.etYoutubeUrl);
-        tilYoutubeUrl = findViewById(R.id.tilYoutubeUrl);
         spSubject = findViewById(R.id.spSubject);
-        rgResourceType = findViewById(R.id.rgResourceType);
         llPdfPicker = findViewById(R.id.llPdfPicker);
         tvSelectedFileName = findViewById(R.id.tvSelectedFileName);
         progressBar = findViewById(R.id.progressBar);
-
-        rgResourceType.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId == R.id.rbPdf) {
-                llPdfPicker.setVisibility(View.VISIBLE);
-                tilYoutubeUrl.setVisibility(View.GONE);
-            } else {
-                llPdfPicker.setVisibility(View.GONE);
-                tilYoutubeUrl.setVisibility(View.VISIBLE);
-            }
-        });
 
         findViewById(R.id.btnPickPdf).setOnClickListener(v -> pickPdf());
         findViewById(R.id.btnUpload).setOnClickListener(v -> validateAndUpload());
@@ -144,23 +129,11 @@ public class UploadResourceActivity extends AppCompatActivity {
             return;
         }
 
-        if (rgResourceType.getCheckedRadioButtonId() == R.id.rbPdf) {
-            if (selectedPdfUri == null) {
-                Toast.makeText(this, "Please select a PDF", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            uploadPdf(title);
-        } else {
-            String url = etYoutubeUrl.getText().toString().trim();
-            if (url.isEmpty()) {
-                etYoutubeUrl.setError("URL required");
-                return;
-            }
-            // In a real app, you'd have a postYoutubeLink endpoint. 
-            // Here we'll just toast success as placeholder if endpoint missing or use generic.
-            Toast.makeText(this, "YouTube link added successfully (Mock)", Toast.LENGTH_SHORT).show();
-            finish();
+        if (selectedPdfUri == null) {
+            Toast.makeText(this, "Please select a PDF", Toast.LENGTH_SHORT).show();
+            return;
         }
+        uploadPdf(title);
     }
 
     private void uploadPdf(String title) {

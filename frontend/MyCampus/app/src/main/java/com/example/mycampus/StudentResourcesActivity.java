@@ -132,21 +132,6 @@ public class StudentResourcesActivity extends AppCompatActivity {
                     applyFilterAndSearch();
                 }
             }
-            @Override public void onFailure(Call<List<Pyq>> call, Throwable t) {}
-        });
-
-        // 3. Fetch YouTube Videos
-        RetrofitClient.getApiService().getYoutubeRecommendations(token).enqueue(new Callback<List<YoutubeRecommendation>>() {
-            @Override
-            public void onResponse(Call<List<YoutubeRecommendation>> call, Response<List<YoutubeRecommendation>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    for (YoutubeRecommendation v : response.body()) {
-                        allResources.add(new UnifiedResource(v.id, v.title, "Subject ID: " + v.subject, "VIDEOS", v.videoUrl));
-                    }
-                    applyFilterAndSearch();
-                }
-            }
-            @Override public void onFailure(Call<List<YoutubeRecommendation>> call, Throwable t) {}
         });
     }
 

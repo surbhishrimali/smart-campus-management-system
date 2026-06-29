@@ -97,7 +97,6 @@ class Command(BaseCommand):
                 description=f"This resource contains comprehensive lecture slides and reading materials for {sub_obj.name}.",
                 subject=sub_obj,
                 resource_type="NOTE",
-                youtube_link="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
                 uploaded_by=faculty
             )
             # PYQ
@@ -107,15 +106,6 @@ class Command(BaseCommand):
                 subject=sub_obj,
                 resource_type="PYQ",
                 year=2024,
-                uploaded_by=faculty
-            )
-            # YouTube recommendation
-            Resource.objects.create(
-                title=f"Useful YouTube lectures for {sub_obj.name}",
-                description=f"Video playlists mapping the syllabus of {sub_obj.name}.",
-                subject=sub_obj,
-                resource_type="YOUTUBE",
-                youtube_link="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
                 uploaded_by=faculty
             )
         self.stdout.write("Successfully generated resources.")

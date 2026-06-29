@@ -98,9 +98,6 @@ public interface ApiService {
     @GET("api/pyqs/")
     Call<List<Pyq>> getPyqs(@Header("Authorization") String token);
 
-    @GET("api/youtube-recommendations/")
-    Call<List<YoutubeRecommendation>> getYoutubeRecommendations(@Header("Authorization") String token);
-
     @GET("api/courses/")
     Call<List<Course>> getCourses(@Header("Authorization") String token);
 

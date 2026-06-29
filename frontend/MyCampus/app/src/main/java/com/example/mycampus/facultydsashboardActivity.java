@@ -25,6 +25,7 @@ import retrofit2.Response;
 public class facultydsashboardActivity extends AppCompatActivity {
 
     private TextView tvFacultyId, tvFacultyDept, tvFacultyDesignation;
+    private TextView tvFacultyName, tvFacultyAvatar;
     private LinearLayout llFacultyResults, llFacultyAttendance;
 
     private List<Result> results = new ArrayList<>();
@@ -49,6 +50,8 @@ public class facultydsashboardActivity extends AppCompatActivity {
         tvFacultyId = findViewById(R.id.tvFacultyId);
         tvFacultyDept = findViewById(R.id.tvFacultyDept);
         tvFacultyDesignation = findViewById(R.id.tvFacultyDesignation);
+        tvFacultyName = findViewById(R.id.tvFacultyName);
+        tvFacultyAvatar = findViewById(R.id.tvFacultyAvatar);
         llFacultyResults = findViewById(R.id.llFacultyResults);
         llFacultyAttendance = findViewById(R.id.llFacultyAttendance);
 
@@ -87,6 +90,11 @@ public class facultydsashboardActivity extends AppCompatActivity {
 
     private void fetchData() {
         int userId = getSharedPreferences("MY_CAMPUS_PREFS", MODE_PRIVATE).getInt("USER_ID", -1);
+        String username = getSharedPreferences("MY_CAMPUS_PREFS", MODE_PRIVATE).getString("USERNAME", "Faculty");
+        if (tvFacultyName != null) tvFacultyName.setText(username);
+        if (tvFacultyAvatar != null && username.length() > 0) {
+            tvFacultyAvatar.setText(username.substring(0, 1).toUpperCase());
+        }
         if (token.isEmpty()) return;
 
         if (userId != -1) {
@@ -94,9 +102,9 @@ public class facultydsashboardActivity extends AppCompatActivity {
                 @Override public void onResponse(Call<List<FacultyProfile>> call, Response<List<FacultyProfile>> response) {
                     if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
                         FacultyProfile p = response.body().get(0);
-                        tvFacultyId.setText(p.facultyId);
-                        tvFacultyDept.setText(p.department);
-                        tvFacultyDesignation.setText(p.designation);
+                        tvFacultyId.setText("ID: " + p.facultyId);
+                        tvFacultyDept.setText("Dept: " + p.department);
+                        tvFacultyDesignation.setText("Designation: " + p.designation);
                     }
                 }
                 @Override public void onFailure(Call<List<FacultyProfile>> call, Throwable t) {}
