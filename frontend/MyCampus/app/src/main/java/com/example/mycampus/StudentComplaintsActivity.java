@@ -157,7 +157,7 @@ public class StudentComplaintsActivity extends AppCompatActivity {
                 }
             }
 
-            @Override public void onFailure(Call<List<Complaint>> call, Throwable t) {}
+            @Override public void onFailure(Call<Complaint> call, Throwable t) {}
         });
     }
 
