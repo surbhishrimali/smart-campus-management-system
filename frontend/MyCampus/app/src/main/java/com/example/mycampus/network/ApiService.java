@@ -23,6 +23,9 @@ public interface ApiService {
     @DELETE("api/users/{id}/")
     Call<Void> deleteUser(@Header("Authorization") String token, @Path("id") int id);
 
+    @PUT("api/users/{id}/")
+    Call<User> updateUser(@Header("Authorization") String token, @Path("id") int id, @Body User user);
+
     @POST("api/student-profiles/")
     Call<StudentProfile> createStudentProfile(@Header("Authorization") String token, @Body StudentProfile profile);
 
@@ -70,6 +73,9 @@ public interface ApiService {
 
     @DELETE("api/notices/{id}/")
     Call<Void> deleteNotice(@Header("Authorization") String token, @Path("id") int id);
+
+    @PUT("api/notices/{id}/")
+    Call<Notice> updateNotice(@Header("Authorization") String token, @Path("id") int id, @Body Notice notice);
 
     @GET("api/attendance/")
     Call<List<Attendance>> getAttendance(@Header("Authorization") String token);

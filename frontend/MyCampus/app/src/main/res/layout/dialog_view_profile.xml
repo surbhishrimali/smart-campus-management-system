@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tvProfName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Name: Admin"
+        android:textSize="16sp"
+        android:layout_marginBottom="8dp"
+        android:textColor="#1F2937"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvProfEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Email: admin@campus.edu"
+        android:textSize="14sp"
+        android:layout_marginBottom="8dp"
+        android:textColor="#4B5563" />
+
+    <TextView
+        android:id="@+id/tvProfRole"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Role: ADMIN"
+        android:textSize="14sp"
+        android:layout_marginBottom="8dp"
+        android:textColor="#4B5563" />
+
+    <TextView
+        android:id="@+id/tvProfDept"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Department: Administration"
+        android:textSize="14sp"
+        android:textColor="#4B5563" />
+</LinearLayout>

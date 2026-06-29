@@ -15,6 +15,10 @@ public class User {
     public String phoneNumber;
     @SerializedName("password")
     public String password;
+    @SerializedName("full_name")
+    public String fullName;
+    @SerializedName("department")
+    public String department;
 
     public User() {}
 

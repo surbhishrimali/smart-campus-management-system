@@ -42,6 +42,18 @@
             android:name=".admindashboardActivity"
             android:exported="false" />
         <activity
+            android:name=".ManageUsersActivity"
+            android:exported="false"
+            android:label="Manage Users" />
+        <activity
+            android:name=".ManageComplaintsActivity"
+            android:exported="false"
+            android:label="Manage Complaints" />
+        <activity
+            android:name=".CampusNoticesActivity"
+            android:exported="false"
+            android:label="Campus Notices" />
+        <activity
             android:name=".StudentdashboardActivity"
             android:exported="false" />
         <activity

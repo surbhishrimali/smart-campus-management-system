@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <EditText
+        android:id="@+id/etEditNoticeTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Notice Title"
+        android:layout_marginBottom="12dp"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/etEditNoticeDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Description"
+        android:layout_marginBottom="12dp"
+        android:inputType="textMultiLine"
+        android:minLines="3" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Target Audience:"
+        android:textSize="12sp"
+        android:layout_marginBottom="4dp" />
+    <Spinner
+        android:id="@+id/spEditNoticeAudience"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Notification Type:"
+        android:textSize="12sp"
+        android:layout_marginBottom="4dp" />
+    <Spinner
+        android:id="@+id/spEditNoticeType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

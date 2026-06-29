@@ -13,6 +13,10 @@ public class Notice {
     public int author;
     @SerializedName("created_at")
     public String createdAt;
+    @SerializedName("target_role")
+    public String targetRole;
+    @SerializedName("notification_type")
+    public String notificationType;
 
     public Notice() {}
 

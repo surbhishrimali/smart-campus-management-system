@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tvDetTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Title: Complaint Title"
+        android:textSize="16sp"
+        android:layout_marginBottom="8dp"
+        android:textColor="#1F2937"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvDetDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Description: Detailed complaint description here."
+        android:textSize="14sp"
+        android:layout_marginBottom="8dp"
+        android:textColor="#4B5563" />
+
+    <TextView
+        android:id="@+id/tvDetUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submitter User ID: 101"
+        android:textSize="14sp"
+        android:layout_marginBottom="8dp"
+        android:textColor="#6B7280" />
+
+    <TextView
+        android:id="@+id/tvDetStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Status: pending"
+        android:textSize="14sp"
+        android:textColor="#6B7280" />
+</LinearLayout>

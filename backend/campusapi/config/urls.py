@@ -54,6 +54,7 @@ urlpatterns = [
     path('api/certificates/', include('certificates.api.urls')),
     path('api/resources/', include('resources.api.urls')),
     path('api/notifications/', include('notifications.api.urls')),
+    path('api/notices/', include('notifications.api.urls')),
     path('api/complaints/', include('complaints.api.urls')),
     path('api/timetable/', include('timetable.api.urls')),
     path('api/examination/', include('examination.api.urls')),
