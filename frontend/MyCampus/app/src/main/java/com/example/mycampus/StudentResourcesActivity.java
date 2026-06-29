@@ -132,6 +132,7 @@ public class StudentResourcesActivity extends AppCompatActivity {
                     applyFilterAndSearch();
                 }
             }
+            @Override public void onFailure(Call<List<Pyq>> call, Throwable t) {}
         });
     }
 
