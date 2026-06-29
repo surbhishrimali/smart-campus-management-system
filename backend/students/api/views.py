@@ -9,7 +9,7 @@ class StudentProfileViewSet(WrappedModelViewSet):
     queryset = StudentProfile.objects.all().select_related('user').order_by('id')
     serializer_class = StudentProfileSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['branch', 'semester', 'section']
+    filterset_fields = ['user', 'branch', 'semester', 'section']
     search_fields = ['enrollment_number', 'user__full_name', 'user__email']
     ordering_fields = ['gpa', 'semester', 'enrollment_number']
     def get_permissions(self):

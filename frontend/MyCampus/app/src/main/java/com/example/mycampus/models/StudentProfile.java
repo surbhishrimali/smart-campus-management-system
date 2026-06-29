@@ -13,4 +13,6 @@ public class StudentProfile {
     public String department;
     @SerializedName("current_semester")
     public int currentSemester;
+    @SerializedName("semester")
+    public int semester;
 }

@@ -3,11 +3,11 @@ package com.example.mycampus;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mycampus.models.Result;
@@ -21,6 +21,7 @@ import retrofit2.Response;
 
 public class StudentResultsActivity extends AppCompatActivity {
 
+    private ImageButton btnBack;
     private LinearLayout llResults;
     private ProgressBar progressBar;
     private TextView tvEmptyState;
@@ -28,12 +29,14 @@ public class StudentResultsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_student_results);
 
+        btnBack = findViewById(R.id.btnBack);
         llResults = findViewById(R.id.llResults);
         progressBar = findViewById(R.id.progressBar);
         tvEmptyState = findViewById(R.id.tvEmptyState);
+
+        btnBack.setOnClickListener(v -> finish());
 
         fetchResults();
     }
@@ -64,21 +67,21 @@ public class StudentResultsActivity extends AppCompatActivity {
         llResults.removeAllViews();
         boolean found = false;
         LayoutInflater inflater = LayoutInflater.from(this);
-        
+
         for (Result r : list) {
             if (r.student == userId) {
                 found = true;
                 View v = inflater.inflate(R.layout.item_result_row, llResults, false);
-                ((TextView) v.findViewById(R.id.tvSubject)).setText("Subject (Sem " + r.semester + ")");
-                ((TextView) v.findViewById(R.id.tvGrade)).setText(String.valueOf(r.gpa)); // Mocking gpa as grade
-                ((TextView) v.findViewById(R.id.tvSemester)).setText("Semester: " + r.semester);
-                ((TextView) v.findViewById(R.id.tvMarks)).setText("GPA: " + r.gpa);
-                ((TextView) v.findViewById(R.id.tvRemarks)).setText(r.hasBacklog ? "Status: Backlog in " + r.backlogSubjects : "Status: Pass");
-                
+                ((TextView) v.findViewById(R.id.tvSubject)).setText("Semester Result Summary");
+                ((TextView) v.findViewById(R.id.tvGrade)).setText("GPA: " + r.gpa);
+                ((TextView) v.findViewById(R.id.tvSemester)).setText("Semester " + r.semester);
+                ((TextView) v.findViewById(R.id.tvMarks)).setText("Subjects List: " + (r.hasBacklog ? r.backlogSubjects : "Cleared"));
+                ((TextView) v.findViewById(R.id.tvRemarks)).setText(r.hasBacklog ? "Status: Fail / Backlogs Exist" : "Status: Pass / Cleared");
+
                 llResults.addView(v);
             }
         }
-        
+
         tvEmptyState.setVisibility(found ? View.GONE : View.VISIBLE);
     }
 }

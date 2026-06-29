@@ -52,6 +52,12 @@ public class facultydsashboardActivity extends AppCompatActivity {
         llFacultyResults = findViewById(R.id.llFacultyResults);
         llFacultyAttendance = findViewById(R.id.llFacultyAttendance);
 
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            toolbar.setNavigationIcon(android.R.drawable.ic_menu_revert);
+            toolbar.setNavigationOnClickListener(v -> finish());
+        }
+
         token = getSharedPreferences("MY_CAMPUS_PREFS", MODE_PRIVATE).getString("JWT_TOKEN", "");
 
         findViewById(R.id.btnGenResult).setOnClickListener(v -> {

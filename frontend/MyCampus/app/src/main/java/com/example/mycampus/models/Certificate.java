@@ -15,6 +15,8 @@ public class Certificate {
     public String issueDate;
     @SerializedName("certificate_url")
     public String certificateUrl;
+    @SerializedName("status")
+    public String status;
 
     public Certificate() {}
 

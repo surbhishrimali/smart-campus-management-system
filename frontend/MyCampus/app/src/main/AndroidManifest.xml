@@ -19,6 +19,26 @@
             android:exported="false"
             android:label="My Results" />
         <activity
+            android:name=".StudentNoticesActivity"
+            android:exported="false"
+            android:label="Campus Notices" />
+        <activity
+            android:name=".StudentResourcesActivity"
+            android:exported="false"
+            android:label="Study Resources" />
+        <activity
+            android:name=".StudentComplaintsActivity"
+            android:exported="false"
+            android:label="My Complaints" />
+        <activity
+            android:name=".StudentProjectsActivity"
+            android:exported="false"
+            android:label="My Projects" />
+        <activity
+            android:name=".StudentCertificatesActivity"
+            android:exported="false"
+            android:label="My Certificates" />
+        <activity
             android:name=".StudentAttendanceActivity"
             android:exported="false"
             android:label="My Attendance" />
