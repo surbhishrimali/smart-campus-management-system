@@ -1,0 +1,1 @@
+adb reverse tcp:8001 tcp:8001

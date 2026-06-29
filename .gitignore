@@ -1,0 +1,24 @@
+# Python virtual environments and caches
+backend/campusapi/venv/
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+
+# Databases
+backend/campusapi/db.sqlite3
+
+# OS files and IDEs
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Frontend (Android) build files and caches
+frontend/MyCampus/.gradle/
+frontend/MyCampus/build/
+frontend/MyCampus/local.properties
+frontend/MyCampus/.idea/
+*.iml
+
+# Redundant archives
+frontend/MyCampus.zip

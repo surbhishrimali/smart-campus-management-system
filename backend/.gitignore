@@ -1,0 +1,51 @@
+# Django / Python
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+**/venv/
+**/env/
+**/ENV/
+**/.env
+**/db.sqlite3
+**/media/
+**/staticfiles/
+
+# Node / Web Frontend
+**/node_modules/
+**/dist/
+**/build/
+**/.next/
+**/.nuxt/
+**/.out/
+**/*.local
+**/package-lock.json
+**/yarn.lock
+**/pnpm-lock.yaml
+
+# Android / Android Studio
+*.iml
+.gradle/
+local.properties
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+**/build/
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aar
+*.ap_
+*.der
+*.xml
+
+# IDEs and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
