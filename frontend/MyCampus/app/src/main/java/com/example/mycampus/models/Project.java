@@ -13,6 +13,12 @@ public class Project {
     public String description;
     @SerializedName("link")
     public String link;
+    @SerializedName("faculty")
+    public int faculty;
+    @SerializedName("status")
+    public String status;
+    @SerializedName("submission_date")
+    public String submissionDate;
 
     public Project() {}
 
