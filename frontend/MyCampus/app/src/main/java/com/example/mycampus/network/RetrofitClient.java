@@ -9,8 +9,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-    // Standard local server url (Works on Emulator/Phone with ADB reverse tcp:8001 tcp:8001)
-    private static final String BASE_URL = "http://127.0.0.1:8001/";
+    // Live PythonAnywhere API url
+    private static final String BASE_URL = "https://ietcampus.pythonanywhere.com/";
 
     private static Retrofit retrofit = null;
 
